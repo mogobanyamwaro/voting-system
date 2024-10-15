@@ -50,8 +50,8 @@ Ensure you have the following installed on your machine:
 1. Clone the repository:
 
    ```bash
-   git clone <repository-url>
-   cd <repository-directory>
+   git clone https://github.com/mogobanyamwaro/voting-system.git
+   cd voting-system
    ```
 
 2. Install dependencies:
@@ -80,3 +80,14 @@ Below is an example of what the output will look like when the tests pass:
       ✔ should prevent non-chairperson from registering a voter (25ms)
       ✔ should prevent registering the same voter twice (29ms)
 ```
+
+## Findings and Observations
+
+- **Struct Handling in JavaScript**: Solidity structs, when accessed from a JavaScript environment, are returned as arrays, not as objects. This required accessing fields via array indices instead of object keys. For instance, in the voter registration test:
+
+  ```javascript
+  const voter = await voting.voters(addr1.address);
+  expect(voter[0]).to.equal(true); // registered field
+  expect(voter[1]).to.equal(false); // voted field
+  expect(voter[2]).to.equal(0); // voteIndex field
+  ```
